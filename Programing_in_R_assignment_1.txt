@@ -22,7 +22,7 @@ complete <- function(directory, id = 1:332) {
   
 }
 
-## PArt 3
+## Part 3
 corr <- function(directory, threshold = 0) {
   file_list <- list.files(directory, ".csv", full.names = TRUE)
   c.pollutant <- unlist(lapply(file_list,
