@@ -1,0 +1,36 @@
+## Programming Assignment 1: Air Pollution
+
+### Part 1
+pollutantmean <- function(directory, pollutant, id = 1:332) {
+  file_list <- list.files(directory, ".csv", full.names = TRUE)[id]
+  D_frame <- do.call("rbind", 
+                     lapply(file_list,
+                            function(x)
+                              read.csv(x, header = TRUE, sep = ",")))
+  sulfate = 2
+  nitrate = 3
+  mean(D_frame[, pollutant], na.rm = TRUE)
+}
+
+### Part 2
+complete <- function(directory, id = 1:332) {
+  file_list <- list.files(directory, ".csv", full.names = TRUE)[id]
+  nobs <- unlist(lapply(file_list,
+                        function(x)
+                          sum(complete.cases(read.csv(x, header = TRUE, sep = ",")))))
+  data.frame(id, nobs)
+  
+}
+
+### PArt 3
+corr <- function(directory, threshold = 0) {
+  file_list <- list.files(directory, ".csv", full.names = TRUE)
+  c.pollutant <- unlist(lapply(file_list,
+                               function(x)
+                                 if(sum(complete.cases(read.csv(x))) > threshold){
+                                   with(read.csv(x),
+                                        cor(sulfate, nitrate, use =  "complete.obs"))
+                                 }))
+  return(as.numeric(c.pollutant))
+  
+}
